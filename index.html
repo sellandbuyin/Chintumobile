@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chintu Mobile & Laptop Store - New Bundu Road, Silli</title>
+  <meta name="description" content="All Smartphone Brands, Laptops, 0% EMI, Guaranteed Free Gifts, and Express 35-min Repair at New Bundu Road, Silli, Ranchi, Jharkhand." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React & Babel Standalone CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      background-color: #080B11;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marquee-rev {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+    .animate-marquee-rev {
+      display: flex;
+      width: max-content;
+      animation: marquee-rev 30s linear infinite;
+    }
+    .animate-marquee-rev:hover {
+      animation-play-state: paused;
+    }
+    .animate-float {
+      animation: float-slow 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="selection:bg-amber-400 selection:text-black antialiased">
+  <div id="root"></div>
+
+  <!-- React Babel Script containing full website logic -->
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    const STORE_INFO = {
+      name: 'Chintu Mobile & Laptop Store',
+      tagline: 'All Smartphone Brands · Laptops · Express Hardware Repair',
+      phones: ['9334063364', '9304142764'],
+      whatsapp: '919334063364',
+      address: 'New Bundu Road, Silli, Ranchi, Jharkhand - 835102',
+      landmark: 'Near Bundu Road Chowk, Silli Market',
+      timings: 'Open All 7 Days: 9:30 AM – 9:30 PM',
+      mapEmbedUrl: 'https://maps.google.com/maps?q=New+Bundu+Road,+Silli,+Ranchi,+Jharkhand&t=&z=15&ie=UTF8&iwloc=&output=embed',
+      mapDirectionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=New+Bundu+Road,+Silli,+Ranchi,+Jharkhand',
+    };
+
+    const FREE_GIFTS = [
+      { category: 'With Any Smartphone (₹10,000 - ₹25,000)', gift: 'Free Bluetooth Neckband / TWS Earbuds + 9H UV Curved Glass + Shockproof Cover', val: 'Worth ₹1,499 FREE' },
+      { category: 'With Any Flagship Smartphone (Above ₹25,000)', gift: 'Free Calling Smartwatch (AMOLED Display) + UV Glass + Fast Car Charger', val: 'Worth ₹2,999 FREE' },
+      { category: 'With Every Laptop Purchase (Any Brand)', gift: 'Free Padded Laptop Backpack + Wireless Mouse + 32GB Pen Drive + Keyboard Skin', val: 'Worth ₹3,499 FREE' },
+      { category: 'With Every Mobile / Laptop Repair', gift: 'Free 9H Tempered Screen Guard or Free Fast Charging Cable', val: 'Worth ₹299 FREE' }
+    ];
+
+    const SMARTPHONES = [
+      {
+        id: 'apple-iphone-16',
+        name: 'Apple iPhone 16',
+        brand: 'Apple',
+        price: 77999,
+        originalPrice: 79900,
+        freeGift: 'Free 20W PD Adapter + MagSafe Clear Case + UV Glass',
+        colors: [
+          { name: 'Ultramarine', hex: '#3B6899' },
+          { name: 'Teal', hex: '#3E8B83' },
+          { name: 'Black', hex: '#1C1C1E' }
+        ],
+        specs: { cpu: 'A18 Bionic (Apple Intelligence)', ramRom: '8GB + 128GB', cam: '48MP Fusion Camera', bat: 'Up to 22h Video' }
+      },
+      {
+        id: 'samsung-s24-fe',
+        name: 'Samsung Galaxy S24 FE 5G',
+        brand: 'Samsung',
+        price: 54999,
+        originalPrice: 65999,
+        freeGift: 'Free Calling Smartwatch + 25W Fast Charger',
+        colors: [
+          { name: 'Blue', hex: '#7799BA' },
+          { name: 'Mint', hex: '#93B7A7' },
+          { name: 'Graphite', hex: '#343A40' }
+        ],
+        specs: { cpu: 'Exynos 2400e (Galaxy AI)', ramRom: '8GB + 256GB', cam: '50MP OIS + 3x Zoom', bat: '4700 mAh + 25W' }
+      },
+      {
+        id: 'oneplus-12r',
+        name: 'OnePlus 12R 5G',
+        brand: 'OnePlus',
+        price: 39999,
+        originalPrice: 42999,
+        freeGift: 'Free OnePlus Bullets Z2 Wireless + Matte Case + 9H Glass',
+        colors: [
+          { name: 'Cool Blue', hex: '#4A7C9B' },
+          { name: 'Iron Gray', hex: '#383838' }
+        ],
+        specs: { cpu: 'Snapdragon 8 Gen 2 (4nm)', ramRom: '16GB + 256GB', cam: '50MP Sony IMX890 OIS', bat: '5500 mAh + 100W' }
+      },
+      {
+        id: 'realme-14-pro-plus',
+        name: 'Realme 14 Pro+ 5G',
+        brand: 'Realme',
+        price: 29999,
+        originalPrice: 34999,
+        freeGift: 'Free Calling Smartwatch + UV Glass + Designer Cover',
+        colors: [
+          { name: 'Monet Gold', hex: '#E6C687' },
+          { name: 'Emerald Green', hex: '#1C4A3E' }
+        ],
+        specs: { cpu: 'Snapdragon 7s Gen 3', ramRom: '12GB + 256GB', cam: '50MP Sony OIS + Periscope', bat: '5200 mAh + 80W' }
+      },
+      {
+        id: 'oppo-reno-12-pro',
+        name: 'Oppo Reno 12 Pro 5G',
+        brand: 'Oppo',
+        price: 36999,
+        originalPrice: 41999,
+        freeGift: 'Free Oppo Enco TWS + UV Glass + 6-Month Screen Protection',
+        colors: [
+          { name: 'Sunset Gold', hex: '#DFC397' },
+          { name: 'Space Brown', hex: '#3B3332' }
+        ],
+        specs: { cpu: 'Dimensity 7300-Energy', ramRom: '12GB + 512GB', cam: '50MP OIS + 50MP Telephoto', bat: '5000 mAh + 80W' }
+      },
+      {
+        id: 'vivo-v40-5g',
+        name: 'Vivo V40 5G',
+        brand: 'Vivo',
+        price: 34999,
+        originalPrice: 39999,
+        freeGift: 'Free Fitness Smartwatch + Ring Light Stand + UV Glass',
+        colors: [
+          { name: 'Ganges Blue', hex: '#3B82F6' },
+          { name: 'Titanium Grey', hex: '#64748B' }
+        ],
+        specs: { cpu: 'Snapdragon 7 Gen 3', ramRom: '12GB + 256GB', cam: '50MP ZEISS Dual OIS', bat: '5500 mAh + 80W' }
+      },
+      {
+        id: 'moto-edge-50',
+        name: 'Motorola Edge 50 Fusion',
+        brand: 'Motorola',
+        price: 22999,
+        originalPrice: 25999,
+        freeGift: 'Free Wireless Neckband + UV Curved Glass + TPU Case',
+        colors: [
+          { name: 'Marshmallow Blue', hex: '#87CEEB' },
+          { name: 'Hot Pink', hex: '#FF69B4' }
+        ],
+        specs: { cpu: 'Snapdragon 7s Gen 2', ramRom: '12GB + 256GB', cam: '50MP Sony LYT-700C OIS', bat: '5000 mAh + 68W' }
+      },
+      {
+        id: 'realme-p1',
+        name: 'Realme P1 5G',
+        brand: 'Realme',
+        price: 15499,
+        originalPrice: 19999,
+        freeGift: 'Free 9H Tempered Glass + Designer Back Cover',
+        colors: [
+          { name: 'Phoenix Red', hex: '#9E2A2B' },
+          { name: 'Peacock Green', hex: '#0B525B' }
+        ],
+        specs: { cpu: 'Dimensity 7050 5G', ramRom: '8GB + 128GB', cam: '50MP AI Primary', bat: '5000 mAh + 45W' }
+      }
+    ];
+
+    const LAPTOPS = [
+      {
+        id: 'hp-15s',
+        name: 'HP 15s (12th Gen Core i5)',
+        brand: 'HP',
+        price: 49999,
+        originalPrice: 58999,
+        freeGift: 'Free HP Padded Backpack + HP Wireless Mouse + 32GB Pen Drive',
+        specs: 'Intel Core i5-1235U · 16GB RAM · 512GB NVMe SSD · 15.6" FHD Anti-glare · Windows 11 & Office 2021'
+      },
+      {
+        id: 'dell-inspiron-3520',
+        name: 'Dell Inspiron 15 (120Hz Screen)',
+        brand: 'Dell',
+        price: 44999,
+        originalPrice: 52999,
+        freeGift: 'Free Dell Pro Backpack + Dell Optical Mouse + Silicon Keyguard',
+        specs: '12th Gen Intel Core i3/i5 · 16GB RAM · 512GB Fast SSD · 120Hz FHD Display · ExpressCharge'
+      },
+      {
+        id: 'lenovo-ideapad-slim3',
+        name: 'Lenovo IdeaPad Slim 3',
+        brand: 'Lenovo',
+        price: 46999,
+        originalPrice: 54999,
+        freeGift: 'Free Lenovo Casual Backpack + Wireless Mouse + Laptop Stand',
+        specs: 'AMD Ryzen 5 7520U · 16GB LPDDR5 · 512GB PCIe 4.0 SSD · MIL-STD-810H Military Toughness'
+      },
+      {
+        id: 'acer-nitro-gaming',
+        name: 'Acer Nitro V 15 Gaming',
+        brand: 'Acer',
+        price: 67999,
+        originalPrice: 79999,
+        freeGift: 'Free RGB Gaming Mouse + XL Speed Gaming Mousepad',
+        specs: '13th Gen Core i5-13420H · 16GB DDR5 · RTX 4050 (6GB VRAM) · 144Hz 3ms IPS Gaming Screen'
+      },
+      {
+        id: 'macbook-air-m2',
+        name: 'Apple MacBook Air 13" (M2)',
+        brand: 'Apple',
+        price: 89900,
+        originalPrice: 99900,
+        freeGift: 'Free Premium Leatherette Sleeve + Multi-Port USB-C Hub',
+        specs: 'Apple M2 8-core CPU / 8-core GPU · 256GB SSD · Liquid Retina Display · Up to 18 Hours Battery'
+      }
+    ];
+
+    const REPAIR_SERVICES = [
+      { type: 'mobile', issue: 'Mobile Broken Display / Touch Replacement', time: '35 Minutes', price: 1199, warranty: '90 Days Guarantee' },
+      { type: 'mobile', issue: 'Mobile Battery Replacement (Fast Drain / Swollen)', time: '25 Minutes', price: 799, warranty: '180 Days Guarantee' },
+      { type: 'mobile', issue: 'Type-C / Lightning Port & Charging IC Repair', time: '20 Minutes', price: 399, warranty: '60 Days Guarantee' },
+      { type: 'laptop', issue: 'Laptop Screen / Broken Display Replacement', time: '45 Minutes', price: 2499, warranty: '1 Year Warranty' },
+      { type: 'laptop', issue: 'Laptop Super-Speed SSD & RAM 10x Upgrade', time: '30 Minutes', price: 1499, warranty: '3 Years Warranty' },
+      { type: 'laptop', issue: 'Laptop Hinges, Body Repair & Thermal Paste Clean', time: '40 Minutes', price: 799, warranty: 'Service Tested' },
+    ];
+
+    function App() {
+      const [cart, setCart] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [selectedBrand, setSelectedBrand] = useState('All');
+      const [heroPhone, setHeroPhone] = useState(SMARTPHONES[3]);
+      const [heroColorIdx, setHeroColorIdx] = useState(0);
+
+      // EMI Calculator States
+      const [devicePrice, setDevicePrice] = useState(29999);
+      const [downpaymentPct, setDownpaymentPct] = useState(0);
+      const [tenure, setTenure] = useState(12);
+
+      // Repair Lab States
+      const [repairTab, setRepairTab] = useState('mobile');
+      const [selectedRepairIdx, setSelectedRepairIdx] = useState(0);
+
+      const filteredPhones = useMemo(() => {
+        if (selectedBrand === 'All') return SMARTPHONES;
+        return SMARTPHONES.filter(p => p.brand.toLowerCase() === selectedBrand.toLowerCase());
+      }, [selectedBrand]);
+
+      const monthlyEmi = useMemo(() => {
+        const downpayment = (devicePrice * downpaymentPct) / 100;
+        const loan = devicePrice - downpayment;
+        return Math.round(loan / tenure);
+      }, [devicePrice, downpaymentPct, tenure]);
+
+      const addToCart = (item, type = 'phone') => {
+        setCart(prev => {
+          const ex = prev.find(i => i.id === item.id);
+          if (ex) return prev.map(i => i.id === item.id ? { ...i, qty: i.qty + 1 } : i);
+          return [...prev, { ...item, qty: 1, type }];
+        });
+        setIsCartOpen(true);
+      };
+
+      const currentRepairs = REPAIR_SERVICES.filter(r => r.type === repairTab);
+      const currentService = currentRepairs[selectedRepairIdx] || currentRepairs[0];
+
+      return (
+        <div className="min-h-screen flex flex-col bg-[#080B11]">
+          {/* Continuous Moving Banner */}
+          <div className="bg-gradient-to-r from-amber-500/15 via-emerald-500/15 to-amber-500/15 border-b border-white/5 py-2.5 overflow-hidden select-none">
+            <div className="animate-marquee flex items-center gap-8 whitespace-nowrap text-xs font-semibold text-slate-200">
+              <span className="flex items-center gap-1.5 text-amber-400">🎁 ASSURED FREE GIFT ON EVERY SMARTPHONE & LAPTOP PURCHASE</span>
+              <span>·</span>
+              <span className="text-white">📍 LOCATION: NEW BUNDU ROAD, SILI, RANCHI, JHARKHAND</span>
+              <span>·</span>
+              <span className="text-emerald-400">⚡ 0% INTEREST EMI FINANCE WITH BAJAJ FINSERV & TVS CREDIT</span>
+              <span>·</span>
+              <span className="text-sky-400">💻 ALL LAPTOPS: HP, DELL, LENOVO, ASUS, ACER, APPLE MACBOOK</span>
+              <span>·</span>
+              <span className="text-yellow-400">🔧 EXPRESS MOBILE & LAPTOP HARDWARE REPAIR IN 35 MINUTES</span>
+              <span>·</span>
+              <span className="text-amber-400">📞 DIRECT HELPLINE: 9334063364 / 9304142764</span>
+            </div>
+          </div>
+
+          {/* Navigation Bar */}
+          <header className="sticky top-0 z-40 bg-[#080B11]/90 backdrop-blur-xl border-b border-slate-800 py-3.5 px-4 sm:px-8">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <a href="#" className="text-xl sm:text-2xl font-black font-display text-white tracking-tight hover:text-amber-400 transition-colors">
+                CHINTU MOBILE & LAPTOP
+              </a>
+
+              <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="#phones" className="hover:text-amber-400 transition-colors">Smartphones</a>
+                <a href="#laptops" className="hover:text-amber-400 transition-colors">Laptops</a>
+                <a href="#free-gifts" className="hover:text-amber-400 text-amber-300 transition-colors flex items-center gap-1">
+                  <span>🎁 Free Gifts</span>
+                </a>
+                <a href="#emi" className="hover:text-amber-400 transition-colors">0% EMI</a>
+                <a href="#repair" className="hover:text-amber-400 transition-colors">Express Repair</a>
+                <a href="#map" className="hover:text-amber-400 transition-colors">Store & Map</a>
+              </nav>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={`tel:${STORE_INFO.phones[0]}`}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-lg shadow-md"
+                >
+                  <span>Call: {STORE_INFO.phones[0]}</span>
+                </a>
+                <button
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative p-2 rounded-lg bg-slate-900 border border-slate-700 text-white"
+                >
+                  <span className="text-sm">🛍️</span>
+                  {cart.length > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black flex items-center justify-center">
+                      {cart.reduce((a, b) => a + b.qty, 0)}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Hero Section */}
+          <section className="relative py-12 lg:py-20 px-4 sm:px-8 border-b border-slate-800 overflow-hidden">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-7 space-y-5 text-left">
+                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                  <span>New Bundu Road, Silli · Authorized Hub for All Brands</span>
+                </div>
+                <h1 className="text-4xl sm:text-6xl font-black font-display text-white leading-tight">
+                  All Phones & Laptops.{' '}
+                  <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-400 bg-clip-text text-transparent">
+                    Guaranteed Free Gift
+                  </span>{' '}
+                  on Every Purchase!
+                </h1>
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
+                  Apple, Samsung, OnePlus, Vivo, Realme, Oppo, Motorola, aur Top Laptops (HP, Dell, Lenovo, ASUS).
+                  0% EMI par phone ghar le jayein aur sath me <strong>Smartwatch, TWS Earbuds, ya Laptop Bag</strong> 100% FREE payein!
+                </p>
+
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <a href="#phones" className="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-lg">
+                    Browse All Phones
+                  </a>
+                  <a href="#laptops" className="px-5 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg">
+                    Explore Laptops
+                  </a>
+                  <a href="#map" className="px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold text-xs sm:text-sm">
+                    View Google Map Location
+                  </a>
+                </div>
+              </div>
+
+              {/* 3D Phone Showcase */}
+              <div className="lg:col-span-5 flex flex-col items-center">
+                <div className="animate-float relative w-64 sm:w-72 h-[480px] rounded-[44px] p-2.5 bg-gradient-to-tr from-amber-500/30 to-emerald-500/30 border-2 border-white/20 shadow-2xl">
+                  <div className="w-full h-full rounded-[36px] bg-[#0c1017] p-3 flex flex-col justify-between border border-white/10 relative overflow-hidden">
+                    <div className="text-center pt-2">
+                      <div className="w-3 h-3 rounded-full bg-slate-900 border border-emerald-400 mx-auto mb-2"></div>
+                      <span className="text-[10px] uppercase font-bold text-amber-300 px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/20">
+                        {heroPhone.brand} 5G Flagship
+                      </span>
+                    </div>
+
+                    <div className="my-auto text-center space-y-2">
+                      <h3 className="text-xl font-black font-display text-white">{heroPhone.name}</h3>
+                      <div className="text-2xl font-black text-amber-400 font-mono-num">₹{heroPhone.price.toLocaleString('en-IN')}</div>
+                      <p className="text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 p-2 rounded-lg border border-emerald-400/20">
+                        🎁 {heroPhone.freeGift}
+                      </p>
+                    </div>
+
+                    <div className="bg-slate-900/80 p-2 rounded-xl border border-slate-800 text-[10px] space-y-1 text-slate-300">
+                      <div>CPU: {heroPhone.specs.cpu}</div>
+                      <div>RAM/ROM: {heroPhone.specs.ramRom}</div>
+                      <div>EMI: ₹{Math.round(heroPhone.price/12)}/month (0% Interest)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-4">
+                  {heroPhone.colors.map((c, i) => (
+                    <button
+                      key={c.name}
+                      onClick={() => setHeroColorIdx(i)}
+                      className="w-5 h-5 rounded-full border border-white/40"
+                      style={{ backgroundColor: c.hex }}
+                    ></button>
+                  ))}
+                  <span className="text-xs text-slate-400 ml-1">{heroPhone.colors[heroColorIdx]?.name}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Continuous Multi-Brand Marquee */}
+          <div className="py-4 border-b border-slate-800 bg-slate-950 overflow-hidden">
+            <div className="animate-marquee-rev flex items-center gap-10 whitespace-nowrap text-sm font-bold text-slate-300">
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-white">Apple iPhone & MacBook</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-cyan-400">HP Laptops</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-blue-400">Dell Inspiron</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-amber-400">realme Store</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-emerald-400">OPPO Flagship</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-sky-400">vivo Series</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-blue-500">Samsung Galaxy</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-red-500">OnePlus</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-indigo-400">ASUS Vivobook</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-teal-400">motorola 5G</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-orange-400">Xiaomi Redmi</span>
+              <span className="px-3 py-1 bg-slate-900 rounded-lg border border-slate-800 text-yellow-400">Bajaj Finserv 0% EMI</span>
+            </div>
+          </div>
+
+          {/* Free Gifts Promotion Banner */}
+          <section id="free-gifts" className="py-12 px-4 sm:px-8 bg-gradient-to-r from-amber-500/10 via-slate-900 to-emerald-500/10 border-b border-slate-800">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center max-w-2xl mx-auto mb-8">
+                <span className="text-xs uppercase font-bold text-amber-400 tracking-wider">Kharidari Par Guaranteed Uphaar</span>
+                <h2 className="text-3xl sm:text-4xl font-black font-display text-white mt-1">Har Phone & Laptop Par Free Gift!</h2>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">Koi lucky draw nahi — Silli store par turant guaranteed free gift paayein.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {FREE_GIFTS.map((g, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xs font-bold text-amber-400 uppercase">{g.category}</div>
+                      <div className="text-sm font-bold text-white mt-1">{g.gift}</div>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold whitespace-nowrap">
+                      {g.val}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* All Smartphones Section */}
+          <section id="phones" className="py-16 px-4 sm:px-8 border-b border-slate-800">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                  <span className="text-xs font-bold uppercase text-amber-400 tracking-wider">All Smartphone Brands</span>
+                  <h2 className="text-3xl sm:text-4xl font-black font-display text-white">Latest 5G Smartphones</h2>
+                </div>
+
+                <div className="flex gap-1.5 overflow-x-auto pb-1">
+                  {['All', 'Apple', 'Samsung', 'OnePlus', 'Vivo', 'Realme', 'Oppo', 'Motorola'].map(brand => (
+                    <button
+                      key={brand}
+                      onClick={() => setSelectedBrand(brand)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+                        selectedBrand === brand ? 'bg-amber-400 text-slate-950' : 'bg-slate-900 text-slate-300 border border-slate-800'
+                      }`}
+                    >
+                      {brand}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {filteredPhones.map(phone => (
+                  <div key={phone.id} className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 flex flex-col justify-between transition-all">
+                    <div>
+                      <div className="text-xs font-bold text-amber-400">{phone.brand}</div>
+                      <h3 className="text-base font-bold text-white font-display mt-0.5">{phone.name}</h3>
+
+                      <div className="my-3 p-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-[11px] text-amber-200">
+                        🎁 <strong>Free Gift:</strong> {phone.freeGift}
+                      </div>
+
+                      <div className="text-[11px] text-slate-400 space-y-1">
+                        <div>CPU: {phone.specs.cpu}</div>
+                        <div>RAM/ROM: {phone.specs.ramRom}</div>
+                        <div>Camera: {phone.specs.cam}</div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-800">
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-lg font-black text-white font-mono-num">₹{phone.price.toLocaleString('en-IN')}</span>
+                        <span className="text-[11px] text-amber-400">0% EMI: ₹{Math.round(phone.price/12)}/mo</span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => addToCart(phone, 'phone')}
+                          className="py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-lg border border-slate-700"
+                        >
+                          Add to Bag
+                        </button>
+                        <a
+                          href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent(`Namaste Chintu Mobile Silli! I want to order ${phone.name} (Price: ₹${phone.price}). Free gift sath me milega na?`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="py-2 text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-center"
+                        >
+                          WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Laptops Section */}
+          <section id="laptops" className="py-16 px-4 sm:px-8 border-b border-slate-800 bg-[#070A0F]">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-8">
+                <span className="text-xs font-bold uppercase text-amber-400 tracking-wider">Chintu Laptop Zone · Silli</span>
+                <h2 className="text-3xl sm:text-4xl font-black font-display text-white">Laptops for Students, Work & Gaming</h2>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">HP, Dell, Lenovo, ASUS, Acer & Apple MacBook with <strong>Free Laptop Bag + Wireless Mouse</strong>!</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {LAPTOPS.map(laptop => (
+                  <div key={laptop.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="text-xs font-bold text-sky-400">{laptop.brand} Laptop</div>
+                      <h3 className="text-lg font-bold text-white font-display mt-0.5">{laptop.name}</h3>
+
+                      <div className="my-3 p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/30 text-xs text-amber-300">
+                        🎁 <strong>Free Gift:</strong> {laptop.freeGift}
+                      </div>
+
+                      <p className="text-xs text-slate-400 leading-relaxed">{laptop.specs}</p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-800">
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-xl font-black text-white font-mono-num">₹{laptop.price.toLocaleString('en-IN')}</span>
+                        <span className="text-xs text-amber-400">0% EMI: ₹{Math.round(laptop.price/12)}/mo</span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => addToCart(laptop, 'laptop')}
+                          className="py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-lg border border-slate-700"
+                        >
+                          Add to Bag
+                        </button>
+                        <a
+                          href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent(`Namaste Chintu Mobile & Laptop Silli! I want to enquire about ${laptop.name} (Price: ₹${laptop.price}).`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="py-2 text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-center"
+                        >
+                          WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 0% EMI Calculator */}
+          <section id="emi" className="py-16 px-4 sm:px-8 border-b border-slate-800">
+            <div className="max-w-4xl mx-auto bg-slate-900/80 p-6 sm:p-8 rounded-3xl border border-slate-800">
+              <div className="text-center mb-6">
+                <span className="text-xs font-bold uppercase text-amber-400 tracking-wider">Bajaj & TVS Finance</span>
+                <h2 className="text-3xl font-black font-display text-white">0% Interest EMI Calculator</h2>
+                <p className="text-xs text-slate-300 mt-1">₹0 downpayment par koi bhi mobile ya laptop ghar le jayein.</p>
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                    <span>Phone / Laptop Price</span>
+                    <span className="text-amber-400 font-mono-num text-base">₹{devicePrice.toLocaleString('en-IN')}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="10000"
+                    max="120000"
+                    step="1000"
+                    value={devicePrice}
+                    onChange={e => setDevicePrice(Number(e.target.value))}
+                    className="w-full accent-amber-400"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 block mb-1">Downpayment</label>
+                    <div className="flex gap-2">
+                      {[0, 20, 30].map(pct => (
+                        <button
+                          key={pct}
+                          onClick={() => setDownpaymentPct(pct)}
+                          className={`flex-1 py-1.5 rounded-lg text-xs font-bold ${downpaymentPct === pct ? 'bg-amber-400 text-slate-950' : 'bg-slate-950 text-slate-400'}`}
+                        >
+                          {pct === 0 ? '₹0 Down' : `${pct}%`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 block mb-1">Tenure (Months)</label>
+                    <div className="flex gap-2">
+                      {[6, 9, 12, 18].map(m => (
+                        <button
+                          key={m}
+                          onClick={() => setTenure(m)}
+                          className={`flex-1 py-1.5 rounded-lg text-xs font-bold ${tenure === m ? 'bg-emerald-500 text-slate-950' : 'bg-slate-950 text-slate-400'}`}
+                        >
+                          {m}M
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-slate-400">Monthly EMI</span>
+                    <div className="text-3xl font-black text-white font-mono-num">₹{monthlyEmi.toLocaleString('en-IN')}<span className="text-xs font-normal text-slate-400">/mo</span></div>
+                  </div>
+                  <a
+                    href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent(`Namaste Chintu Mobile Silli! I want to buy a device worth ₹${devicePrice} on 0% EMI (${tenure} months). Please verify my Aadhaar & PAN approval.`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs"
+                  >
+                    Apply on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Express Phone & Laptop Repair Lab */}
+          <section id="repair" className="py-16 px-4 sm:px-8 border-b border-slate-800 bg-[#070A0F]">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                  <span className="text-xs font-bold uppercase text-amber-400 tracking-wider">35-Minute On-The-Spot Service</span>
+                  <h2 className="text-3xl sm:text-4xl font-black font-display text-white">Phone & Laptop Repairing Lab</h2>
+                  <p className="text-xs sm:text-sm text-slate-300 mt-1">Original screen, battery & SSD upgrade with up to 180 days warranty at New Bundu Road Silli.</p>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setRepairTab('mobile'); setSelectedRepairIdx(0); }}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold ${repairTab === 'mobile' ? 'bg-amber-400 text-slate-950' : 'bg-slate-900 text-slate-400'}`}
+                  >
+                    Mobile Phone Repair
+                  </button>
+                  <button
+                    onClick={() => { setRepairTab('laptop'); setSelectedRepairIdx(0); }}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold ${repairTab === 'laptop' ? 'bg-amber-400 text-slate-950' : 'bg-slate-900 text-slate-400'}`}
+                  >
+                    Laptop Repair & Upgrade
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {currentRepairs.map((r, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setSelectedRepairIdx(idx)}
+                    className={`p-4 rounded-2xl cursor-pointer border ${selectedRepairIdx === idx ? 'bg-slate-900 border-amber-400' : 'bg-slate-950 border-slate-800'}`}
+                  >
+                    <div className="text-sm font-bold text-white">{r.issue}</div>
+                    <div className="text-xs text-amber-400 font-bold mt-2">Starting ₹{r.price} · {r.time}</div>
+                    <div className="text-[11px] text-emerald-400 mt-0.5">{r.warranty}</div>
+                    <a
+                      href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent(`Namaste Chintu Mobile Silli! Mujhe ${r.issue} karwana hai. Dukan par technician available hain?`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-3 block text-center py-1.5 rounded-lg bg-amber-400/20 text-amber-300 font-bold text-xs"
+                    >
+                      Book Repair Slot
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Live Google Map & Store Location */}
+          <section id="map" className="py-16 px-4 sm:px-8 border-b border-slate-800">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center max-w-2xl mx-auto mb-8">
+                <span className="text-xs font-bold uppercase text-amber-400 tracking-wider">Store Location</span>
+                <h2 className="text-3xl sm:text-4xl font-black font-display text-white">Visit Our Silli Showroom</h2>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                  <strong>{STORE_INFO.address}</strong> ({STORE_INFO.landmark})
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-8 bg-slate-900 p-4 rounded-3xl border border-slate-800 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-300">Live Google Maps</span>
+                    <a
+                      href={STORE_INFO.mapDirectionsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-3.5 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs"
+                    >
+                      Start GPS Navigation
+                    </a>
+                  </div>
+                  <div className="w-full h-80 rounded-2xl overflow-hidden border border-slate-700">
+                    <iframe
+                      title="Chintu Mobile Silli Location"
+                      src={STORE_INFO.mapEmbedUrl}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-4 bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4 text-xs">
+                  <div>
+                    <span className="text-slate-400 uppercase font-bold text-[10px]">Showroom Hours</span>
+                    <div className="text-sm font-bold text-white mt-1">{STORE_INFO.timings}</div>
+                  </div>
+
+                  <div>
+                    <span className="text-slate-400 uppercase font-bold text-[10px]">Call or WhatsApp Store</span>
+                    <div className="space-y-1.5 mt-1">
+                      {STORE_INFO.phones.map(p => (
+                        <div key={p} className="flex justify-between items-center p-2 rounded-lg bg-slate-950">
+                          <span className="font-bold text-white font-mono">+91 {p}</span>
+                          <a href={`tel:${p}`} className="text-amber-400 font-bold">Call</a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-300">
+                    🎁 <strong>Assured Gift:</strong> Dukan par aakar koi bhi phone ya laptop lene par turant gift pack diya jata hai!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="py-8 px-4 text-center text-xs text-slate-500 bg-[#05070B]">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>© 2026 Chintu Mobile & Laptop Store. All Rights Reserved.</div>
+              <div className="text-slate-400">New Bundu Road, Silli, Ranchi, Jharkhand - 835102</div>
+            </div>
+          </footer>
+
+          {/* Cart Drawer */}
+          {isCartOpen && (
+            <div className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm">
+              <div className="w-full max-w-md bg-[#0a0e17] h-full p-6 flex flex-col justify-between border-l border-slate-800">
+                <div>
+                  <div className="flex justify-between items-center pb-4 border-b border-slate-800">
+                    <h3 className="font-bold text-white font-display">Your Order Bag ({cart.reduce((a,b)=>a+b.qty,0)})</h3>
+                    <button onClick={() => setIsCartOpen(false)} className="text-slate-400 hover:text-white">✕</button>
+                  </div>
+
+                  <div className="py-4 space-y-3 max-h-[60vh] overflow-y-auto">
+                    {cart.length === 0 ? (
+                      <div className="text-center py-8 text-slate-400">Your bag is empty.</div>
+                    ) : (
+                      cart.map(item => (
+                        <div key={item.id} className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center">
+                          <div>
+                            <div className="text-xs font-bold text-white">{item.name}</div>
+                            <div className="text-xs text-amber-400 font-mono-num font-bold">₹{item.price.toLocaleString('en-IN')} x {item.qty}</div>
+                            {item.freeGift && <div className="text-[10px] text-emerald-400">🎁 {item.freeGift}</div>}
+                          </div>
+                          <button
+                            onClick={() => setCart(prev => prev.filter(i => i.id !== item.id))}
+                            className="text-xs text-rose-400"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {cart.length > 0 && (
+                  <div className="pt-4 border-t border-slate-800 space-y-3">
+                    <div className="flex justify-between text-sm font-bold text-white">
+                      <span>Total Amount:</span>
+                      <span className="font-mono-num text-amber-400">
+                        ₹{cart.reduce((sum, item) => sum + (item.price * item.qty), 0).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent(
+                        `*NEW ORDER - CHINTU MOBILE & LAPTOP SILI*\n\n` +
+                        cart.map((it, idx) => `${idx + 1}. ${it.name} x ${it.qty} = ₹${it.price * it.qty}`).join('\n') +
+                        `\n\nTotal: ₹${cart.reduce((sum, item) => sum + (item.price * item.qty), 0)}\nPlease confirm stock & free gifts at New Bundu Road store!`
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs text-center block"
+                    >
+                      Send Order to WhatsApp
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Floating WhatsApp Action */}
+          <a
+            href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent('Namaste Chintu Mobile & Laptop Silli! I have an enquiry about mobile/laptop/repair.')}`}
+            target="_blank"
+            rel="noreferrer"
+            className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-2xl flex items-center gap-2"
+          >
+            <span>💬 WhatsApp Chat</span>
+          </a>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
